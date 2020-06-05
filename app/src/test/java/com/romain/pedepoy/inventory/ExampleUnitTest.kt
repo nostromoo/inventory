@@ -1,4 +1,4 @@
-package com.romain.pedepoy.invotory
+package com.romain.pedepoy.inventory
 
 import org.junit.Test
 

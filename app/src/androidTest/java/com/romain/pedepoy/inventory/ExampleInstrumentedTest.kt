@@ -1,4 +1,4 @@
-package com.romain.pedepoy.invotory
+package com.romain.pedepoy.inventory
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
