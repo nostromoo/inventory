@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "700567700379",
+    "firebase_url": "https://inventory-d0998.firebaseio.com",
+    "project_id": "inventory-d0998",
+    "storage_bucket": "inventory-d0998.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700567700379:android:5b0b6ea787a4793558173e",
+        "android_client_info": {
+          "package_name": "com.romain.pedepoy.inventory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700567700379-amo2dd7mb5g808bv72hqh0nkqahoj9mp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.romain.pedepoy.inventory",
+            "certificate_hash": "7e50cfc1c9ef0f7131dbcd9f9139ff27732336c7"
+          }
+        },
+        {
+          "client_id": "700567700379-tihciupj0p4mpisi0d7s0lic77rbfs7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyIQ_BIowU9VVfs9lSOGLml7uWbgownfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700567700379-tihciupj0p4mpisi0d7s0lic77rbfs7l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

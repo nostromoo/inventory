@@ -9,8 +9,8 @@ import java.util.*
 @Entity(tableName = "products")
 @TypeConverters(DateConverter::class)
 data class Product (
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey
+    val id: String,
     val expiryDate: Date,
     val name: String
 )

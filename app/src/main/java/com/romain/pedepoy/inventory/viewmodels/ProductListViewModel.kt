@@ -20,7 +20,7 @@ class ProductListViewModel constructor(
         navController.navigate(R.id.action_productListFragment_to_scanFragment)
     }
 
-    fun insert(product:Product) = viewModelScope.launch {
-        productRepository.insert(product)
-    }
+//    fun insert(product:Product) = viewModelScope.launch {
+//        productRepository.insert(product)
+//    }
 }

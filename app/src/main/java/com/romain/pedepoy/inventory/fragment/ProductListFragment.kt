@@ -15,7 +15,7 @@ import com.romain.pedepoy.inventory.data.ProductDatabase
 import com.romain.pedepoy.inventory.data.ProductRepository
 import com.romain.pedepoy.inventory.databinding.FragmentProductListBinding
 import com.romain.pedepoy.inventory.viewmodels.ProductListViewModel
-import com.romain.pedepoy.inventory.viewmodels.ProductListViewModelFactory
+import com.romain.pedepoy.inventory.viewmodels.ViewModelsFactory
 import java.util.*
 
 class ProductListFragment : Fragment() {
@@ -27,12 +27,11 @@ class ProductListFragment : Fragment() {
         binding = FragmentProductListBinding.inflate(inflater, container, false)
         val dao = ProductDatabase.getInstance(requireContext()).productDao()
         val repository = ProductRepository(dao)
-        val factory = ProductListViewModelFactory(repository)
+        val factory = ViewModelsFactory(repository)
         productlistViewModel = ViewModelProvider(this,factory).get(ProductListViewModel::class.java)
         binding.myViewModel = productlistViewModel
         binding.lifecycleOwner = this
         initRecyclerView()
-        productlistViewModel.insert(Product(0, Date(),"Evian"))
 
         return binding.root
     }

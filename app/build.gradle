@@ -11,7 +11,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.romain.pedepoy.invotory"
+        applicationId "com.romain.pedepoy.inventory"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -60,13 +60,13 @@ dependencies {
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
-    implementation "androidx.paging:paging-runtime:$rootProject.pagingVersion"
 
-    implementation "com.google.android.gms:play-services-vision:20.0.0"
-
+    // ML Kit
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
 
     //Test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+apply plugin: 'com.google.gms.google-services'
