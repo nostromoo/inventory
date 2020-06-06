@@ -12,13 +12,13 @@ import java.util.*
 data class Product (
     @PrimaryKey
     var id: String,
-    var expiryDate: Date,
+    var expirationDate: Date,
     val name: String?= null,
     val picture: String?= null
 ){
     fun displayName(): String = if(name.isNullOrEmpty())"Name unavailable" else name
 
-    fun displayDate(): String = "Expiration date : ${SimpleDateFormat("dd MMMM yyyy").format(expiryDate)}"
+    fun displayDate(): String = "Expiration date : ${SimpleDateFormat("dd MMMM yyyy").format(expirationDate)}"
 
     fun displayBarcode(): String =  "Barcode : $id"
 }

@@ -1,4 +1,4 @@
-package com.romain.pedepoy.inventory.fragment
+package com.romain.pedepoy.inventory.productList
 
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +13,6 @@ import com.romain.pedepoy.inventory.adapter.ProductsAdapter
 import com.romain.pedepoy.inventory.dagger.Injectable
 import com.romain.pedepoy.inventory.dagger.injectViewModel
 import com.romain.pedepoy.inventory.databinding.FragmentProductListBinding
-import com.romain.pedepoy.inventory.viewmodels.ProductListViewModel
 import javax.inject.Inject
 
 class ProductListFragment : Fragment(), Injectable {

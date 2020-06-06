@@ -14,6 +14,7 @@ Scanner de code-barres
 ------------
 
 J'utilise ML Kit, puisque c'est le composant de Google. Après une rapide recherche, cela semblait être l'option la plus évidente.
+j'ai fait mes tests avec des code-barres GTIN 13 sur le site OpenFoodFacts.
 
 Gestion de la persistence
 ------------

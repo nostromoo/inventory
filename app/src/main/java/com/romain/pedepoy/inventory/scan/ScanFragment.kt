@@ -1,8 +1,7 @@
-package com.romain.pedepoy.inventory.fragment
+package com.romain.pedepoy.inventory.scan
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,16 +12,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
+import com.romain.pedepoy.inventory.R
 import com.romain.pedepoy.inventory.barcode.BarcodeScanningProcessor
 import com.romain.pedepoy.inventory.barcode.CameraSource
 import com.romain.pedepoy.inventory.dagger.Injectable
 import com.romain.pedepoy.inventory.dagger.injectViewModel
-import com.romain.pedepoy.inventory.data.ProductDatabase
-import com.romain.pedepoy.inventory.data.ProductRepository
 import com.romain.pedepoy.inventory.databinding.FragmentScanBinding
-import com.romain.pedepoy.inventory.viewmodels.ScanViewModel
-import com.romain.pedepoy.inventory.viewmodels.ViewModelsFactory
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
@@ -57,12 +56,9 @@ class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallba
 
         scanViewModel = injectViewModel(viewModelFactory)
         binding.myViewModel = scanViewModel
-        binding.setDateLabel.visibility = View.GONE
-        binding.datePicker.visibility = View.GONE
-        binding.validateButton.visibility = View.GONE
         binding.lifecycleOwner = this
 
-        scanViewModel.message.observe(viewLifecycleOwner) {
+        scanViewModel.statusMessage.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { message ->
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
             }
@@ -71,13 +67,32 @@ class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallba
         scanViewModel.products.observe(viewLifecycleOwner){
         }
 
+        scanViewModel.editTaskEvent.observe(viewLifecycleOwner){
+            val navOptions = NavOptions.Builder().setPopUpTo(R.id.productListFragment, true).build()
+            val navController = findNavController()
+            navController.navigate(R.id.action_scanFragment_to_productListFragment,null, navOptions)
+        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            binding.datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
-                val calendar = GregorianCalendar(year, monthOfYear, dayOfMonth)
-                scanViewModel.inputDate.value = calendar.time
+        scanViewModel.getBarCode.observe(viewLifecycleOwner){
+            //Date Picker
+            val builder = MaterialDatePicker.Builder.datePicker()
+            val picker = builder.build()
+            picker.show(parentFragmentManager, picker.toString())
+            picker.addOnCancelListener {
+                picker.dismiss()
+                scanViewModel.editTask()
+            }
+
+            picker.addOnNegativeButtonClickListener {
+                picker.dismiss()
+                scanViewModel.editTask()
+            }
+
+            picker.addOnPositiveButtonClickListener {
+                scanViewModel.validateExpirationDate(Date(it))
             }
         }
+
         if (allPermissionsGranted()) {
             createCameraSource()
         } else {
@@ -122,15 +137,11 @@ class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallba
     }
 
     private fun barcodeFoundListener(firebaseVisionBarcode: FirebaseVisionBarcode){
-        //Toast.makeText(this,"selected name is ${subscriber.name}",Toast.LENGTH_LONG).show()
 
-        binding.setDateLabel.visibility = View.VISIBLE
-        binding.datePicker.visibility = View.VISIBLE
-        binding.validateButton.visibility = View.VISIBLE
         binding.firePreview.stop()
         binding.firePreview.release()
         binding.firePreview.visibility = View.GONE
-        scanViewModel.insertFromBarcode(firebaseVisionBarcode)
+        scanViewModel.setBarcodeValue(firebaseVisionBarcode)
     }
 
     private fun startCameraSource() {
@@ -163,7 +174,8 @@ class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallba
 
         if (allNeededPermissions.isNotEmpty()) {
             requestPermissions(
-                allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS
+                allNeededPermissions.toTypedArray(),
+                PERMISSION_REQUESTS
             )
         }
     }

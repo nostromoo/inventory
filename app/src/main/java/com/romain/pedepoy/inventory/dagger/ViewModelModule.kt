@@ -2,8 +2,8 @@ package com.romain.pedepoy.inventory.dagger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.romain.pedepoy.inventory.viewmodels.ProductListViewModel
-import com.romain.pedepoy.inventory.viewmodels.ScanViewModel
+import com.romain.pedepoy.inventory.productList.ProductListViewModel
+import com.romain.pedepoy.inventory.scan.ScanViewModel
 import com.romain.pedepoy.inventory.viewmodels.ViewModelsFactory
 import dagger.Binds
 import dagger.Module

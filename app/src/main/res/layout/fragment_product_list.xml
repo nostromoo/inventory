@@ -5,7 +5,7 @@
     <data>
         <variable
             name="myViewModel"
-            type="com.romain.pedepoy.inventory.viewmodels.ProductListViewModel" />
+            type="com.romain.pedepoy.inventory.productList.ProductListViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

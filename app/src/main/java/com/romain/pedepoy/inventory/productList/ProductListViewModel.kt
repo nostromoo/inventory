@@ -1,13 +1,10 @@
-package com.romain.pedepoy.inventory.viewmodels
+package com.romain.pedepoy.inventory.productList
 
 import android.view.View
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import com.romain.pedepoy.inventory.R
-import com.romain.pedepoy.inventory.data.Product
 import com.romain.pedepoy.inventory.data.ProductRepository
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProductListViewModel @Inject constructor(
