@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,6 +16,8 @@ import androidx.lifecycle.observe
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.romain.pedepoy.inventory.barcode.BarcodeScanningProcessor
 import com.romain.pedepoy.inventory.barcode.CameraSource
+import com.romain.pedepoy.inventory.dagger.Injectable
+import com.romain.pedepoy.inventory.dagger.injectViewModel
 import com.romain.pedepoy.inventory.data.ProductDatabase
 import com.romain.pedepoy.inventory.data.ProductRepository
 import com.romain.pedepoy.inventory.databinding.FragmentScanBinding
@@ -24,13 +25,16 @@ import com.romain.pedepoy.inventory.viewmodels.ScanViewModel
 import com.romain.pedepoy.inventory.viewmodels.ViewModelsFactory
 import java.io.IOException
 import java.util.*
+import javax.inject.Inject
 
-class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallback{
+class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallback, Injectable {
 
-    private lateinit var binding: FragmentScanBinding
-    private lateinit var scanViewModel: ScanViewModel
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var scanViewModel: ScanViewModel
     private var cameraSource: CameraSource? = null
+    private lateinit var binding: FragmentScanBinding
 
     private val requiredPermissions: Array<String?>
         get() {
@@ -50,10 +54,8 @@ class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallba
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentScanBinding.inflate(inflater, container, false)
-        val dao = ProductDatabase.getInstance(requireContext()).productDao()
-        val repository = ProductRepository(dao)
-        val factory = ViewModelsFactory(repository)
-        scanViewModel = ViewModelProvider(this,factory).get(ScanViewModel::class.java)
+
+        scanViewModel = injectViewModel(viewModelFactory)
         binding.myViewModel = scanViewModel
         binding.datePicker.visibility = View.GONE
         binding.validateButton.visibility = View.GONE

@@ -8,9 +8,10 @@ import com.romain.pedepoy.inventory.R
 import com.romain.pedepoy.inventory.data.Product
 import com.romain.pedepoy.inventory.data.ProductRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductListViewModel constructor(
-    private val productRepository: ProductRepository
+class ProductListViewModel @Inject constructor(
+    productRepository: ProductRepository
 ) : ViewModel() {
 
     val products = productRepository.products
@@ -19,8 +20,4 @@ class ProductListViewModel constructor(
         val navController = v.findNavController()
         navController.navigate(R.id.action_productListFragment_to_scanFragment)
     }
-
-//    fun insert(product:Product) = viewModelScope.launch {
-//        productRepository.insert(product)
-//    }
 }

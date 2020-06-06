@@ -14,9 +14,10 @@ import com.romain.pedepoy.inventory.data.Product
 import com.romain.pedepoy.inventory.data.ProductRepository
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class ScanViewModel constructor(
-    private val productRepository: ProductRepository
+class ScanViewModel @Inject constructor(
+    val productRepository: ProductRepository
 ) : ViewModel() {
 
     val products = productRepository.products
@@ -43,18 +44,14 @@ class ScanViewModel constructor(
                 }
                 else -> {
                     inputDate.value?.let { date ->
-                        val firstOrNull = products.value?.firstOrNull { it.id == displayValue }
-                        when {
-                            firstOrNull == null -> {
+                        when (products.value?.firstOrNull { it.id == displayValue }) {
+                            null -> {
                                 productRepository.insert(Product(displayValue, date))
                                 statusMessage.value = Event("Product Inserted Successfully")
                             }
-                            firstOrNull.expiryDate.after(date) -> {
+                            else -> {
                                 productRepository.insert(Product(displayValue, date))
                                 statusMessage.value = Event("Expiry date updated Successfully")
-                            }
-                            else -> {
-                                statusMessage.value = Event("Product was not inserted")
                             }
                         }
 

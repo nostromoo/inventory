@@ -10,23 +10,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.romain.pedepoy.inventory.adapter.ProductsAdapter
-import com.romain.pedepoy.inventory.data.ProductDatabase
-import com.romain.pedepoy.inventory.data.ProductRepository
+import com.romain.pedepoy.inventory.dagger.Injectable
+import com.romain.pedepoy.inventory.dagger.injectViewModel
 import com.romain.pedepoy.inventory.databinding.FragmentProductListBinding
 import com.romain.pedepoy.inventory.viewmodels.ProductListViewModel
-import com.romain.pedepoy.inventory.viewmodels.ViewModelsFactory
+import javax.inject.Inject
 
-class ProductListFragment : Fragment() {
-    private lateinit var binding: FragmentProductListBinding
-    private lateinit var productlistViewModel: ProductListViewModel
+class ProductListFragment : Fragment(), Injectable {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var productlistViewModel: ProductListViewModel
     private lateinit var adapter: ProductsAdapter
+    private lateinit var binding: FragmentProductListBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProductListBinding.inflate(inflater, container, false)
-        val dao = ProductDatabase.getInstance(requireContext()).productDao()
-        val repository = ProductRepository(dao)
-        val factory = ViewModelsFactory(repository)
-        productlistViewModel = ViewModelProvider(this,factory).get(ProductListViewModel::class.java)
+
+        productlistViewModel = injectViewModel(viewModelFactory)
+
         binding.myViewModel = productlistViewModel
         binding.lifecycleOwner = this
         initRecyclerView()
