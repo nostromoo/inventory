@@ -16,15 +16,15 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAlbumApi() = Retrofit.Builder()
+    fun provideOpenFoodFactsApi() = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build().create(OpenFoodFactsApi::class.java)
 
     @Singleton
     @Provides
-    fun provideAlbumsRemoteDataSource(albumApi: OpenFoodFactsApi)
-            =  ProductsRemoteDataSource(albumApi)
+    fun provideProductsRemoteDataSource(openFoodFactsApi: OpenFoodFactsApi)
+            =  ProductsRemoteDataSource(openFoodFactsApi)
 
     @Singleton
     @Provides
