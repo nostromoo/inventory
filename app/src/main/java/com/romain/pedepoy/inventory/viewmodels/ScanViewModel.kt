@@ -12,7 +12,11 @@ import com.romain.pedepoy.inventory.Event
 import com.romain.pedepoy.inventory.R
 import com.romain.pedepoy.inventory.data.Product
 import com.romain.pedepoy.inventory.data.ProductRepository
+import com.romain.pedepoy.inventory.service.Result
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
@@ -33,7 +37,7 @@ class ScanViewModel @Inject constructor(
 
 
     fun validateExpiryDate(v : View)  = viewModelScope.launch {
-        barCode?.displayValue?.let { displayValue ->
+        barCode?.displayValue?.let { ean ->
 
             when {
                 inputDate.value == null -> {
@@ -44,14 +48,15 @@ class ScanViewModel @Inject constructor(
                 }
                 else -> {
                     inputDate.value?.let { date ->
-                        when (products.value?.firstOrNull { it.id == displayValue }) {
-                            null -> {
-                                productRepository.insert(Product(displayValue, date))
-                                statusMessage.value = Event("Product Inserted Successfully")
-                            }
-                            else -> {
-                                productRepository.insert(Product(displayValue, date))
-                                statusMessage.value = Event("Expiry date updated Successfully")
+                        withContext(Dispatchers.IO) {
+                            when (products.value?.firstOrNull { it.id == ean }) {
+                                null -> {
+                                    retrieveProductInfo(ean, "Product Inserted Successfully", date)
+
+                                }
+                                else -> {
+                                    retrieveProductInfo(ean, "Expiry date updated Successfully", date)
+                                }
                             }
                         }
 
@@ -59,6 +64,26 @@ class ScanViewModel @Inject constructor(
                         val navController = Navigation.findNavController(v)
                         navController.navigate(R.id.action_scanFragment_to_productListFragment,null, navOptions)
                     }
+                }
+            }
+        }
+    }
+
+    private suspend fun retrieveProductInfo(ean: String, message: String, expiryDate: Date) {
+        val result =  productRepository.fetchProductInfo(ean)
+        when (result.status) {
+            Result.Status.SUCCESS -> {
+                result.data?.let { productResponse ->
+                    productRepository.insert(Product(ean,expiryDate, productResponse.product?.product_name_fr, productResponse.product?.image_url))
+                    CoroutineScope(Dispatchers.Main).launch{
+                        statusMessage.value = Event(message)
+                    }
+                }
+            }
+            Result.Status.ERROR -> {
+                productRepository.insert(Product(ean, expiryDate))
+                CoroutineScope(Dispatchers.Main).launch{
+                    statusMessage.value = Event(message)
                 }
             }
         }

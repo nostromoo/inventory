@@ -22,7 +22,9 @@
         android:name="com.google.firebase.ml.vision.DEPENDENCIES"
         android:value="barcode" />
 
-    <activity android:name="com.romain.pedepoy.inventory.MainActivity">
+    <activity
+        android:name="com.romain.pedepoy.inventory.MainActivity"
+        android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 

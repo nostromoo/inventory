@@ -3,29 +3,20 @@
 buildscript {
 
     ext {
-        playServicesVersion = '20.0.0'
         appCompatVersion = '1.1.0'
         kotlinVersion = '1.3.70'
         ktxVersion = '1.2.0'
         constraintVersion = '1.1.3'
         recyclerViewVersion = '1.1.0'
-        materialVersion = '1.1.0'
         gradleVersion = '3.6.1'
         roomVersion = '2.2.5'
-        pagingVersion = '2.1.2'
         lifecycleVersion = '2.2.0'
         coroutinesVersion = '1.3.5'
         daggerVersion = '2.23.1'
-        coreTestingVersion = '2.0.0'
-        mockwebserverVersion = "3.8.1"
-        testCoreVersion = "1.1.0"
-        testExtJunit = '1.1.0'
-        testRunnerVersion = "1.1.1"
-        testRulesVersion = "1.1.1"
         retrofitVersion = "2.6.0"
-        okhttpVersion = "4.4.0"
         picassoVersion = "2.71828"
-        mockitoVersion = "2.25.0"
+        navVersion = "2.2.2"
+
     }
 
     repositories {

@@ -27,13 +27,25 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"/>
         </com.romain.pedepoy.inventory.barcode.CameraSourcePreview>
+        <TextView
+            android:id="@+id/setDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set the expiration date :"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/datePicker"
+            android:textStyle="bold" />
         <DatePicker
             android:id="@+id/datePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/setDateLabel"
             />
 
         <Button
@@ -42,7 +54,7 @@
             android:layout_height="wrap_content"
             android:background="#03A9F4"
             android:onClick="@{(v)->myViewModel.validateExpiryDate(v)}"
-            android:text="Valider"
+            android:text="Validate"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

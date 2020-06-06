@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.romain.pedepoy.inventory.utilities.DATABASE_NAME
 
 @Database(entities = [Product::class],version = 1, exportSchema = false)
 abstract class ProductDatabase : RoomDatabase() {
@@ -21,7 +22,7 @@ abstract class ProductDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): ProductDatabase {
-            return Room.databaseBuilder(context, ProductDatabase::class.java, "product_database")
+            return Room.databaseBuilder(context, ProductDatabase::class.java, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
         }

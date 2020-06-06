@@ -57,6 +57,7 @@ class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallba
 
         scanViewModel = injectViewModel(viewModelFactory)
         binding.myViewModel = scanViewModel
+        binding.setDateLabel.visibility = View.GONE
         binding.datePicker.visibility = View.GONE
         binding.validateButton.visibility = View.GONE
         binding.lifecycleOwner = this
@@ -123,6 +124,7 @@ class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallba
     private fun barcodeFoundListener(firebaseVisionBarcode: FirebaseVisionBarcode){
         //Toast.makeText(this,"selected name is ${subscriber.name}",Toast.LENGTH_LONG).show()
 
+        binding.setDateLabel.visibility = View.VISIBLE
         binding.datePicker.visibility = View.VISIBLE
         binding.validateButton.visibility = View.VISIBLE
         binding.firePreview.stop()
