@@ -23,7 +23,7 @@ import com.romain.pedepoy.inventory.viewmodels.ViewModelsFactory
 import java.io.IOException
 import java.util.*
 
-class ScanFragment : Fragment() {
+class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallback{
 
     private lateinit var binding: FragmentScanBinding
     private lateinit var scanViewModel: ScanViewModel
@@ -85,6 +85,17 @@ class ScanFragment : Fragment() {
         cameraSource?.release()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (allPermissionsGranted()) {
+            createCameraSource()
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
     private fun createCameraSource() {
         // If there's no existing cameraSource, create one.
         if (cameraSource == null) {
@@ -138,8 +149,8 @@ class ScanFragment : Fragment() {
         }
 
         if (allNeededPermissions.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                requireActivity(), allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS
+            requestPermissions(
+                allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS
             )
         }
     }
