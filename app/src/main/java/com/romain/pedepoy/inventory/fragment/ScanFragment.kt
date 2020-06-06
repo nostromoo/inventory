@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.romain.pedepoy.inventory.barcode.BarcodeScanningProcessor
 import com.romain.pedepoy.inventory.barcode.CameraSource
@@ -57,14 +59,21 @@ class ScanFragment : Fragment(), ActivityCompat.OnRequestPermissionsResultCallba
         binding.validateButton.visibility = View.GONE
         binding.lifecycleOwner = this
 
+        scanViewModel.message.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { message ->
+                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+            }
+        }
+
+        scanViewModel.products.observe(viewLifecycleOwner){
+        }
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            binding.datePicker.setOnDateChangedListener(object :DatePicker.OnDateChangedListener{
-                override fun onDateChanged(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-                    scanViewModel.inputDate.value = Date()
-                }
-
-            })
+            binding.datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
+                val calendar = GregorianCalendar(year, monthOfYear, dayOfMonth)
+                scanViewModel.inputDate.value = calendar.time
+            }
         }
         if (allPermissionsGranted()) {
             createCameraSource()

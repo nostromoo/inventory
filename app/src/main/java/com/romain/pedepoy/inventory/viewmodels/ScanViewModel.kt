@@ -1,11 +1,15 @@
 package com.romain.pedepoy.inventory.viewmodels
 
-import androidx.databinding.Bindable
-import androidx.databinding.Observable
+import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
+import com.romain.pedepoy.inventory.Event
+import com.romain.pedepoy.inventory.R
 import com.romain.pedepoy.inventory.data.Product
 import com.romain.pedepoy.inventory.data.ProductRepository
 import kotlinx.coroutines.launch
@@ -13,29 +17,57 @@ import java.util.*
 
 class ScanViewModel constructor(
     private val productRepository: ProductRepository
-) : ViewModel(), Observable {
+) : ViewModel() {
 
-      var barCode: FirebaseVisionBarcode? = null
-//    fun setDatePickerVisibility(visibility: Int) {
-//        datePickerVisibility.value = visibility
-//    }
+    val products = productRepository.products
 
-    @Bindable
+    private var barCode: FirebaseVisionBarcode? = null
+
     val inputDate = MutableLiveData<Date>()
 
-    fun validateExpiryDate()  = viewModelScope.launch {
-        barCode?.displayValue?.let {
-            productRepository.insert(Product(it, inputDate.value!!, "name"))
+    private val statusMessage = MutableLiveData<Event<String>>()
+
+    val message: LiveData<Event<String>>
+        get() = statusMessage
+
+
+    fun validateExpiryDate(v : View)  = viewModelScope.launch {
+        barCode?.displayValue?.let { displayValue ->
+
+            when {
+                inputDate.value == null -> {
+                    statusMessage.value = Event("You have to select a date")
+                }
+                inputDate.value?.before(Date()) == true -> {
+                    statusMessage.value = Event("Date has to be in the future")
+                }
+                else -> {
+                    inputDate.value?.let { date ->
+                        val firstOrNull = products.value?.firstOrNull { it.id == displayValue }
+                        when {
+                            firstOrNull == null -> {
+                                productRepository.insert(Product(displayValue, date))
+                                statusMessage.value = Event("Product Inserted Successfully")
+                            }
+                            firstOrNull.expiryDate.after(date) -> {
+                                productRepository.insert(Product(displayValue, date))
+                                statusMessage.value = Event("Expiry date updated Successfully")
+                            }
+                            else -> {
+                                statusMessage.value = Event("Product was not inserted")
+                            }
+                        }
+
+                        val navOptions = NavOptions.Builder().setPopUpTo(R.id.productListFragment, true).build()
+                        val navController = Navigation.findNavController(v)
+                        navController.navigate(R.id.action_scanFragment_to_productListFragment,null, navOptions)
+                    }
+                }
+            }
         }
     }
 
     fun insertFromBarcode(barcode: FirebaseVisionBarcode) = viewModelScope.launch {
         barCode = barcode
-    }
-
-    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-    }
-
-    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 }

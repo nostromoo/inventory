@@ -11,6 +11,5 @@ import java.util.*
 data class Product (
     @PrimaryKey
     val id: String,
-    val expiryDate: Date,
-    val name: String
+    val expiryDate: Date
 )

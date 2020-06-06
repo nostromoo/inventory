@@ -10,13 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.romain.pedepoy.inventory.adapter.ProductsAdapter
-import com.romain.pedepoy.inventory.data.Product
 import com.romain.pedepoy.inventory.data.ProductDatabase
 import com.romain.pedepoy.inventory.data.ProductRepository
 import com.romain.pedepoy.inventory.databinding.FragmentProductListBinding
 import com.romain.pedepoy.inventory.viewmodels.ProductListViewModel
 import com.romain.pedepoy.inventory.viewmodels.ViewModelsFactory
-import java.util.*
 
 class ProductListFragment : Fragment() {
     private lateinit var binding: FragmentProductListBinding

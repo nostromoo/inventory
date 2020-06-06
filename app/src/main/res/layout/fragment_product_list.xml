@@ -11,18 +11,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
+
         <Button
             android:id="@+id/addProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="#03A9F4"
+            android:elevation="5dp"
             android:onClick="@{(v)->myViewModel.scanProduct(v)}"
-            app:layout_constraintTop_toTopOf="parent"
+            android:padding="10dp"
+            android:text="Scan a product"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/productList"/>
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/productList"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/productList"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addProduct"
