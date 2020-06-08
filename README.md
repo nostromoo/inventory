@@ -37,3 +37,4 @@ Axes d'amélioration
 
 Concernant la partie scan de code-barre, ne maitrisant pas ce sujet, j'ai récupéré des classes dans la sample app de ML Kit que j'ai copiées. Il y a certainement moyen d'optimiser le code.
 Le design peut également être amélioré.
+On pourrait aussi mettre en place des tests unitaires.
